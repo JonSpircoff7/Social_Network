@@ -4,9 +4,20 @@ const dateFormat = require("../utils/dateFormat");
 
 const thoughtSchema = new Schema(
   {
-    thoughtText: {},
-    createAt: {},
-    username: {},
+    thoughtText: {
+      type: String,
+      required: true,
+      maxlength: 50,
+    },
+    createAt: {
+      type: Date,
+      default: Date.now,
+    },
+    username: {
+      type: String,
+      required: true,
+      max_length: 50,
+    },
     reactions: [reactionSchema],
   },
   {
@@ -18,6 +29,12 @@ const thoughtSchema = new Schema(
 );
 
 // add virtual for reaction count
+videoSchema
+  .virtual("reactionCount")
+  // Getter
+  .get(function () {
+    return this.reactions.length;
+  });
 
 const Thought = model("Thought", thoughtSchema);
 
